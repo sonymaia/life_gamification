@@ -26,5 +26,8 @@ class logBooksList(admin.ModelAdmin):
     list_display = ("date", "fk_daily_obj")
     list_display_links = ("date", "fk_daily_obj")
     search_fields = ("date",)
+    list_filter = ("fk_daily_obj",)
+    list_per_page = 10
+    #list_editable = ("date",)
 admin.site.register(Logbook, logBooksList)
 

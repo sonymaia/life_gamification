@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Daily_Objective(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
@@ -15,6 +16,7 @@ class Course(models.Model):
 class Book(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False)
     conclusion_date = models.DateField(null=True, blank=True)
+    #conclusion_date = models.DateField(default = datetime.now, null=True, blank=True)
     def __str__(self):
         return f"Book [name = {self.name}]"
 
