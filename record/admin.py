@@ -1,5 +1,5 @@
 from django.contrib import admin
-from record.models import User, Daily_Objective, Rule, Logbook, Category, Category_Record, Goal
+from record.models import User, Daily_Objective, Rule, Daily_Record, Category, Category_Record, Goal
 
 
 class UsersList(admin.ModelAdmin):
@@ -17,7 +17,7 @@ admin.site.register(Category, CategoriesList)
 class CategoryRecordsList(admin.ModelAdmin):
     list_display = ("id", "fk_category", "description", "date", "fk_user")
     list_display_links = ("id", "fk_category", "description")
-    list_filter = ("fk_category","fk_category","fk_user",)
+    list_filter = ("fk_category","fk_user",)
     list_per_page = 10
     search_fields = ("description",)
 admin.site.register(Category_Record, CategoryRecordsList)
@@ -43,13 +43,13 @@ class RulesList(admin.ModelAdmin):
     search_fields = ("description",)
 admin.site.register(Rule, RulesList)
 
-class logBooksList(admin.ModelAdmin):
+class DailyRecordsList(admin.ModelAdmin):
     list_display = ("date", "fk_daily_obj", "fk_user")
     list_display_links = ("date", "fk_daily_obj")
     search_fields = ("date",)
     list_filter = ("fk_daily_obj", "fk_user",)
     list_per_page = 10
-admin.site.register(Logbook, logBooksList)
+admin.site.register(Daily_Record, DailyRecordsList)
 
 #class BooksAndCoursesList(admin.ModelAdmin):
 #    list_display = ("id", "name", "conclusion_date")

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard</title>
+</head>
+<body>
+    <h3>TESTE</h3>
+    <div class="container"> 
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Obj</th>
+                <th>User</th>
+            </tr>
+            {% for Daily_Record in Daily_Records %}
+            <tr>
+                <td>{{Daily_Record.date}}</td>
+                <td>{{Daily_Record.fk_daily_obj.name}}</td>
+                <td>{{Daily_Record.fk_user.name}}</td> 
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+
+</body>
+</html>
