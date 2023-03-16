@@ -12,12 +12,31 @@
         <table>
             <tr>
                 <th>Name</th>
-                <th>Coins</th>
+                <th>Category&ensp;&ensp;&ensp;</th>
+                <th>Qtd. Registros&ensp;</th>
+                <th>Pontos Categoria</th>
             </tr>
             {% for score in scoreboard %}
             <tr>
                 <td>{{score.user_name}}</td>
-                <td>{{score.coins}}</td>
+                {% for category in score.categories_list %}
+                    <tr>
+                        <td></td>
+                        <td>{{category.category_name }}</td>
+                        <td>{{category.category_records_qty }}</td>
+                        <td>{{category.category_reward_total }}</td>
+                    </tr>
+                {% endfor %}
+                <td><b>TOTAL</b></td>
+                <td></td>
+                <td></td>
+                <td><b>{{score.coins}}</b></td>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
 
             </tr>
             {% endfor %}

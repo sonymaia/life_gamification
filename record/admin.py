@@ -9,8 +9,8 @@ class UsersList(admin.ModelAdmin):
 admin.site.register(User, UsersList)
     
 class CategoriesList(admin.ModelAdmin):
-    list_display = ("id", "name")
-    list_display_links = ("id", "name")
+    list_display = ("id", "name", "reward")
+    list_display_links = ("id", "name", "reward")
     search_fields = ("name",)
 admin.site.register(Category, CategoriesList)
 

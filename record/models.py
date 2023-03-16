@@ -26,6 +26,7 @@ class Daily_Record(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False)
+    reward = models.DecimalField(max_digits=10, decimal_places=0, default = 1)
     def __str__(self):
         return f"Category [name = {self.name}]"
 

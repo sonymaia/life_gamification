@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from record.models import Daily_Record, User, Goal
+from record.models import Daily_Record, User, Goal, Category, Category_Record
 import pandas as pd
-from django.db.models import Sum
+from django.db.models import Sum 
 
 
 def index(request):
@@ -19,7 +19,7 @@ def scoreboard(request):
   
     #analyzing how many times the user met the daily goals
     #the idea is to create a dictionary with this structure
-    #{userId: number of times records were grouped more than 3 times}
+    #dict = {userId: number of times records were grouped more than 3 times}
     dict = {} 
     for row in group_table.items():
         user = row[0][1]
@@ -35,14 +35,39 @@ def scoreboard(request):
     scoreboardlist = []
     for row  in dict.items():
         id_user = row[0]
-        coins = row[1]
+        daily_goals_coins = row[1]
+        total_coins = daily_goals_coins
+        categories_summary_list = []
 
         #Searching for the user's completed goals and adding the rewards with the daily goal coins
-        rewards = Goal.objects.filter(fk_user=id_user, done=True).aggregate(Sum('reward'))['reward__sum']
-        if rewards is not None:
-            coins += rewards
+        goals = Goal.objects.filter(fk_user=id_user, done=True)
+        goals_reward_total = goals.aggregate(Sum('reward'))['reward__sum']
+        if goals_reward_total is not None:
+            total_coins += goals_reward_total
+        else:
+            goals_reward_total = 0
+        
+        
+        categories_list = Category.objects.all() 
+        category_records_list = Category_Record.objects.all()
+        
+        for category in categories_list:
+            category_reward = category.reward
 
-        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().name, 'coins':coins}) 
+            category_records_qty = category_records_list.filter(fk_user=id_user, fk_category=category).count()
+            category_reward_total =  (category_records_qty * category_reward)
+            total_coins += category_reward_total
+            
+            dict_category = {'category_name':category.name, 'category_records_qty':category_records_qty, 'category_reward_total':category_reward_total}
+            categories_summary_list.append(dict_category)
+
+        dict_category = {'category_name':'Daily Goals', 'category_records_qty':daily_goals_coins, 'category_reward_total':daily_goals_coins}
+        categories_summary_list.append(dict_category)
+        
+        dict_category = {'category_name':' Extra Goals', 'category_records_qty':goals.count(), 'category_reward_total':goals_reward_total}
+        categories_summary_list.append(dict_category)
+        
+        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().name, 'coins':total_coins, 'categories_list':categories_summary_list}) 
     
     scoreboard = {'scoreboard': scoreboardlist}
     
