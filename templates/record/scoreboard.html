@@ -7,19 +7,17 @@
     <title>Scoreboard</title>
 </head>
 <body>
-    <h3>TESTE</h3>
+    <h3>Placar</h3>
     <div class="container"> 
         <table>
             <tr>
-                <th>Date</th>
-                <th>Obj</th>
-                <th>User</th>
+                <th>Name</th>
+                <th>Coins</th>
             </tr>
-            {% for Daily_Record in Daily_Records %}
+            {% for score in scoreboard %}
             <tr>
-                <td>{{Daily_Record.date}}</td>
-                <td>{{Daily_Record.fk_daily_obj.name}}</td>
-                <td>{{Daily_Record.fk_user.name}}</td> 
+                <td>{{score.user_name}}</td>
+                <td>{{score.coins}}</td>
 
             </tr>
             {% endfor %}

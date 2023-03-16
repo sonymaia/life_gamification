@@ -39,7 +39,7 @@ class Category_Record(models.Model):
     
 class Goal(models.Model):
     description = models.TextField(null=False, blank=False)
-    creation_date = models.DateField(null=True, blank=True)
+    creation_date = models.DateField(null=True, blank=True, default = datetime.now)
     conclusion_date = models.DateField(null=True, blank=True)
     done = models.BooleanField(null=False, blank=False, default=False)
     fk_user = models.ForeignKey(User, on_delete=models.CASCADE)
