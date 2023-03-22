@@ -3,24 +3,30 @@ from record.models import Daily_Record, User, Goal, Category, Category_Record
 import pandas as pd
 from django.db.models import Sum 
 
-
 def index(request):
      return render(request, 'record/index.html')
 
 def scoreboard(request): 
+    #Search all users in the database
+    UsersList = User.objects.all()
+    dict = {}
+    #create dictionary with users dict = {userId:adding default number for the coins = 0}
+    for user in UsersList:
+       dict[user.id] = 0
+
     #Search the records in the database
     Daily_Records = Daily_Record.objects.all().values('date','fk_user').order_by('fk_user','date')
-    
+
     #Convert to table in pandas
     table = pd.DataFrame(Daily_Records)
 
     #creates a new table grouping the repeated items and showing the number of repeated items per line
     group_table = table.value_counts()
+
   
     #analyzing how many times the user met the daily goals
     #the idea is to create a dictionary with this structure
     #dict = {userId: number of times records were grouped more than 3 times}
-    dict = {} 
     for row in group_table.items():
         user = row[0][1]
         count = row[1]

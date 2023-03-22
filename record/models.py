@@ -20,7 +20,7 @@ class Rule(models.Model):
         return f"Rule [name = {self.description}]"
      
 class Daily_Record(models.Model):
-    date = models.DateField(null=True, blank=True, default = datetime.now)
+    date = models.DateField(null=True, blank=True, default = datetime.today)
     fk_daily_obj = models.ForeignKey(Daily_Objective, on_delete=models.CASCADE)
     fk_user = models.ForeignKey(User, on_delete=models.CASCADE, default = "")
 
@@ -40,7 +40,7 @@ class Category_Record(models.Model):
     
 class Goal(models.Model):
     description = models.TextField(null=False, blank=False)
-    creation_date = models.DateField(null=True, blank=True, default = datetime.now)
+    creation_date = models.DateField(null=True, blank=True, default = datetime.today)
     conclusion_date = models.DateField(null=True, blank=True)
     done = models.BooleanField(null=False, blank=False, default=False)
     fk_user = models.ForeignKey(User, on_delete=models.CASCADE)

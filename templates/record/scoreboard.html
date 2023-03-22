@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoreboard</title>
-</head>
-<body>
+{% extends 'record/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="w3-content w3-container w3-padding-64" id="top">
     <h3>Placar</h3>
     <div class="container"> 
         <table>
@@ -43,6 +39,5 @@
         </table>
     </div>
     
-
-</body>
-</html>
+</div>
+{% endblock %}
