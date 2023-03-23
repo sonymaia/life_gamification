@@ -8,8 +8,8 @@
         <table>
             <tr>
                 <th>Name</th>
-                <th>Category&ensp;&ensp;&ensp;</th>
-                <th>Qty. Records&ensp;</th>
+                <th>Category&ensp;&ensp;&ensp;&ensp;</th>
+                <th>Qty. Records&ensp;&ensp;&ensp;</th>
                 <th>Category Points</th>
             </tr>
             {% for score in scoreboard %}
@@ -23,16 +23,25 @@
                         <td>{{category.category_reward_total }}</td>
                     </tr>
                 {% endfor %}
-                <td><b>TOTAL</b></td>
-                <td></td>
-                <td></td>
+                <tr>
+                    <td> ================== </td>
+                </tr>
+                
+                <td><b>TOTAL COINS</b></td>
+
                 <td><b>{{score.coins}}</b></td>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
+                <tr>
+                    <td>USED GIFTS</td>
+                    <td><b>{{score.gifts_used}}</b></td>
+                </tr>
+                <tr>
+                    <td>UNUSED GIFTS</td>
+                    <td><b>{{score.unused_gifts}}</b></td>
+                    
+                </tr>
+                <td> ================== </td>
+                <tr><td> </td></tr>
+                <tr><td> </td></tr>
 
             </tr>
             {% endfor %}

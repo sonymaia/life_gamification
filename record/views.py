@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from record.models import Daily_Record, User, Goal, Category, Category_Record
+from record.models import Daily_Record, User, Goal, Category, Category_Record, Gift
 import pandas as pd
 from django.db.models import Sum 
+from datetime import datetime
 
 def index(request):
      return render(request, 'record/index.html')
@@ -73,8 +74,37 @@ def scoreboard(request):
         dict_category = {'category_name':' Extra Goals', 'category_records_qty':goals.count(), 'category_reward_total':goals_reward_total}
         categories_summary_list.append(dict_category)
         
-        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().name, 'coins':total_coins, 'categories_list':categories_summary_list}) 
+        unused_gifts, gifts_used = gifts(id_user, total_coins)
+
+        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().name, 
+                               'coins':total_coins,
+                               'categories_list':categories_summary_list,
+                               'unused_gifts':unused_gifts,
+                               'gifts_used':gifts_used
+                               })
+
     
     scoreboard = {'scoreboard': scoreboardlist}
     
     return render(request, 'record/scoreboard.html', scoreboard)
+
+def gifts(user_id, total_coins):    
+    total_gifts = int(total_coins/30)
+    gifts_db = Gift.objects.filter(fk_user = user_id).count() 
+    gifts_used = 0
+    unused_gifts = 0
+
+    difference = total_gifts - gifts_db
+
+    while difference > 0:
+        gift = Gift()
+        gift.creation_date = datetime.today()
+        gift.fk_user = User.objects.get(id = user_id)
+        gift.save()
+        difference -= 1
+  
+
+    gifts_used = Gift.objects.filter(fk_user = user_id, conclusion_date__isnull=False).count() 
+    unused_gifts = Gift.objects.filter(fk_user = user_id, conclusion_date__isnull=True ).count() 
+
+    return unused_gifts, gifts_used

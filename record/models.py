@@ -48,7 +48,12 @@ class Goal(models.Model):
     def __str__(self):
         return f"Goal [description = {self.description}]"
     
-
+class Gift(models.Model):
+    creation_date = models.DateField(null=False, blank=False, default = datetime.today)
+    conclusion_date = models.DateField(null=True, blank=True)
+    fk_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Gift [conclusion_date = {self.conclusion_date}]"
 
 
 #class Course(models.Model):
