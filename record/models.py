@@ -1,13 +1,7 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.models import User
 
-class User(models.Model):
-    name = models.CharField(max_length=300, null=False, blank=False)
-    email = models.CharField(max_length=150, null=False, blank=False)
-    password = models.CharField(max_length=15, null=False, blank=False)
-    def __str__(self):
-        return f"User [name = {self.name}]"
-    
 class Daily_Objective(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     def __str__(self):

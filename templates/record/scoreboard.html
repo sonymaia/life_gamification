@@ -3,15 +3,17 @@
 
 {% block content %}
 <div class="w3-content w3-container w3-padding-64" id="top">
-    <h3>Placar</h3>
     <div class="container"> 
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Category&ensp;&ensp;&ensp;&ensp;</th>
-                <th>Qty. Records&ensp;&ensp;&ensp;</th>
-                <th>Category Points</th>
-            </tr>
+        <p class="h3">SCOREBOARD</p>
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Category&ensp;&ensp;&ensp;&ensp;</th>
+                    <th>Qty. Records&ensp;&ensp;&ensp;</th>
+                    <th>Category Points</th>
+                </tr>
+            </thead>
             {% for score in scoreboard %}
             <tr>
                 <td>{{score.user_name}}</td>
@@ -40,9 +42,7 @@
                     
                 </tr>
                 <td> ================== </td>
-                <tr><td> </td></tr>
-                <tr><td> </td></tr>
-
+  
             </tr>
             {% endfor %}
         </table>

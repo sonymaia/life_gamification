@@ -1,0 +1,32 @@
+{% extends 'record/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Daily Goal Record</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+				<div class="col-sm-2">
+                	{{ form.date.label }}
+                	{{ form.date }}
+				</div>
+            </div>
+            {% for field in form %}
+				{% if field.label != "Date" %}
+					<div class="mb-3 form-check">
+						{{ field }}
+						{{ field.label }}
+					</div>
+				{% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+
+
+
+

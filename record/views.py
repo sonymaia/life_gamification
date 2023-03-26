@@ -1,11 +1,83 @@
 from django.shortcuts import render
-from record.models import Daily_Record, User, Goal, Category, Category_Record, Gift
+from record.models import Daily_Record, Goal, Category, Category_Record, Gift, Daily_Objective
+from django.contrib.auth.models import User
 import pandas as pd
 from django.db.models import Sum 
 from datetime import datetime
+from record.forms import DailyRecordForm
+
 
 def index(request):
      return render(request, 'record/index.html')
+
+def daily_goal_record(request):
+    if request.method == 'POST':
+        form = DailyRecordForm(request.POST)
+        if form.is_valid():
+            dados = form.cleaned_data
+            date = dados['date']
+
+            for key, value in dados.items():
+                print(f'{key}: {value}')
+            
+                if key != 'date':
+                    daily_record = Daily_Record()
+                    daily_record.date = date
+                    daily_record.fk_user = User(id= request.user.id) 
+                    daily_record.fk_daily_obj = Daily_Objective(id= Daily_Objective.objects.filter(name=key).get().id )
+                else:
+                    continue
+
+                exist_daily_record = Daily_Record.objects.filter(date= daily_record.date,
+                                                                fk_user= daily_record.fk_user,
+                                                                fk_daily_obj= daily_record.fk_daily_obj
+                                                                ).exists()
+
+                if value:
+                    print("oiiiiii", exist_daily_record)
+                    
+                    
+                    
+                    if not exist_daily_record:
+                        print("save", exist_daily_record) 
+                        daily_record.save()
+                    else:
+                        print('nao salvei')
+        
+                else:
+                    if exist_daily_record:
+                        print("Delete")
+                        delete_daily_record = Daily_Record.objects.filter(date= daily_record.date,
+                                                                          fk_user= daily_record.fk_user,
+                                                                          fk_daily_obj= daily_record.fk_daily_obj
+                                                                         )
+                        delete_daily_record.delete()
+                        
+                        
+                        
+
+            
+
+
+
+
+            # date = form.cleaned_data['date']
+            # read = form.cleaned_data['read']
+            # course = form.cleaned_data['course']
+            # english = form.cleaned_data['english']
+            # exercise = form.cleaned_data['exercise']
+
+            # daily_record = Daily_Record()
+
+            # daily_record.date = data
+
+        # Redireciona para uma página de sucesso ou outra página
+        #return redirect('sucesso')
+     
+    else:
+        form = DailyRecordForm()
+    return render(request, 'record/daily-goal-record.html', {'form': form})
+
 
 def scoreboard(request): 
     #Search all users in the database
@@ -76,7 +148,7 @@ def scoreboard(request):
         
         unused_gifts, gifts_used = gifts(id_user, total_coins)
 
-        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().name, 
+        scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().username, 
                                'coins':total_coins,
                                'categories_list':categories_summary_list,
                                'unused_gifts':unused_gifts,

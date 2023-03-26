@@ -1,12 +1,6 @@
 from django.contrib import admin
 from record.models import User, Daily_Objective, Rule, Daily_Record, Category, Category_Record, Goal, Gift
 
-class UsersList(admin.ModelAdmin):
-    list_display = ("id", "name", "email")
-    list_display_links = ("id", "name", "email")
-    search_fields = ("name", "email",)
-admin.site.register(User, UsersList)
-    
 class CategoriesList(admin.ModelAdmin):
     list_display = ("id", "name", "reward")
     list_display_links = ("id", "name", "reward")
