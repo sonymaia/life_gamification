@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from record.models import Daily_Record, Goal, Category, Category_Record, Gift, Daily_Objective
 from django.contrib.auth.models import User
 import pandas as pd
@@ -33,46 +33,20 @@ def daily_goal_record(request):
                                                                 fk_daily_obj= daily_record.fk_daily_obj
                                                                 ).exists()
 
-                if value:
-                    print("oiiiiii", exist_daily_record)
-                    
-                    
-                    
-                    if not exist_daily_record:
-                        print("save", exist_daily_record) 
-                        daily_record.save()
-                    else:
-                        print('nao salvei')
-        
-                else:
-                    if exist_daily_record:
-                        print("Delete")
-                        delete_daily_record = Daily_Record.objects.filter(date= daily_record.date,
-                                                                          fk_user= daily_record.fk_user,
-                                                                          fk_daily_obj= daily_record.fk_daily_obj
-                                                                         )
-                        delete_daily_record.delete()
-                        
-                        
-                        
+                if value and not exist_daily_record:                         
+                    daily_record.save()
 
-            
-
-
-
-
-            # date = form.cleaned_data['date']
-            # read = form.cleaned_data['read']
-            # course = form.cleaned_data['course']
-            # english = form.cleaned_data['english']
-            # exercise = form.cleaned_data['exercise']
-
-            # daily_record = Daily_Record()
-
-            # daily_record.date = data
+                elif exist_daily_record:           
+                    print("Delete")
+                    delete_daily_record = Daily_Record.objects.filter(date= daily_record.date,
+                                                                    fk_user= daily_record.fk_user,
+                                                                    fk_daily_obj= daily_record.fk_daily_obj
+                                                                    )
+                    delete_daily_record.delete()
 
         # Redireciona para uma página de sucesso ou outra página
-        #return redirect('sucesso')
+        return redirect(index)
+                            
      
     else:
         form = DailyRecordForm()
