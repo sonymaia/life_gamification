@@ -5,20 +5,27 @@ import pandas as pd
 from django.db.models import Sum 
 from datetime import datetime
 from record.forms import DailyRecordForm
+from django.http import JsonResponse
+from record.core import daily_goals_check
 
 
 def index(request):
      return render(request, 'record/index.html')
 
 def daily_goal_record(request):
+    if request.user.id == None:
+        return redirect('admin:index')
+
     if request.method == 'POST':
-        form = DailyRecordForm(request.POST)
+        form = DailyRecordForm(request.POST, user=request.user)
         if form.is_valid():
             dados = form.cleaned_data
             date = dados['date']
 
+            #key= form field names  
+            #value= result of fields
             for key, value in dados.items():
-                print(f'{key}: {value}')
+                #print(f'{key}: {value}')
             
                 if key != 'date':
                     daily_record = Daily_Record()
@@ -32,12 +39,11 @@ def daily_goal_record(request):
                                                                 fk_user= daily_record.fk_user,
                                                                 fk_daily_obj= daily_record.fk_daily_obj
                                                                 ).exists()
-
-                if value and not exist_daily_record:                         
+                
+                if value == True and not exist_daily_record:                         
                     daily_record.save()
 
-                elif exist_daily_record:           
-                    print("Delete")
+                elif value == False and exist_daily_record:           
                     delete_daily_record = Daily_Record.objects.filter(date= daily_record.date,
                                                                     fk_user= daily_record.fk_user,
                                                                     fk_daily_obj= daily_record.fk_daily_obj
@@ -45,12 +51,18 @@ def daily_goal_record(request):
                     delete_daily_record.delete()
 
         # Redireciona para uma página de sucesso ou outra página
-        return redirect(index)
+        return redirect(scoreboard)
                             
      
     else:
-        form = DailyRecordForm()
+        form = DailyRecordForm(user=request.user.id)
     return render(request, 'record/daily-goal-record.html', {'form': form})
+
+
+
+def get_form_daily_goals_check(request, date):
+    data = daily_goals_check(request.user.id, date)    
+    return JsonResponse(data)
 
 
 def scoreboard(request): 

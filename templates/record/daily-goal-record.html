@@ -2,31 +2,57 @@
 {% load static %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1>Daily Goal Record</h1>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-				<div class="col-sm-2">
-                	{{ form.date.label }}
-                	{{ form.date }}
-				</div>
-            </div>
-            {% for field in form %}
-				{% if field.label != "Date" %}
-					<div class="mb-3 form-check">
-						{{ field }}
-						{{ field.label }}
-					</div>
-				{% endif %}
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </form>
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <h1 class="card-title">Daily Goal Record</h1>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="col-sm-6 mb-4">
+                    <label for="{{ form.date.id_for_label }}" class="col-sm-2 col-form-label">Data</label>
+                    <div class="col-sm-3">
+                        {{ form.date }}
+                    </div>
+                </div>
+                {% for field in form %}
+                {% if field.label != "Date" %}
+                <div class="form-check mb-3">
+                    {{ field }}
+                    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
+
+
+
+
+<script>
+    let dataInput = document.getElementById("date");
+    dataInput.addEventListener("change", function () {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_form_daily_goals_check/' + this.value, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                for (let chave in data) {
+                    document.getElementById(chave).checked = data[chave];
+
+                }
+
+            }
+        };
+        xhr.send();
+    });
+</script>
+
+
 {% endblock %}
-
-
-
-
-
-

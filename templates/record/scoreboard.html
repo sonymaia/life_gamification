@@ -2,51 +2,71 @@
 {% load static %}
 
 {% block content %}
-<div class="w3-content w3-container w3-padding-64" id="top">
-    <div class="container"> 
-        <p class="h3">SCOREBOARD</p>
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Category&ensp;&ensp;&ensp;&ensp;</th>
-                    <th>Qty. Records&ensp;&ensp;&ensp;</th>
-                    <th>Category Points</th>
-                </tr>
-            </thead>
-            {% for score in scoreboard %}
-            <tr>
-                <td>{{score.user_name}}</td>
-                {% for category in score.categories_list %}
-                    <tr>
-                        <td></td>
-                        <td>{{category.category_name }}</td>
-                        <td>{{category.category_records_qty }}</td>
-                        <td>{{category.category_reward_total }}</td>
-                    </tr>
-                {% endfor %}
-                <tr>
-                    <td> ================== </td>
-                </tr>
-                
-                <td><b>TOTAL COINS</b></td>
 
-                <td><b>{{score.coins}}</b></td>
-                <tr>
-                    <td>USED GIFTS</td>
-                    <td><b>{{score.gifts_used}}</b></td>
-                </tr>
-                <tr>
-                    <td>UNUSED GIFTS</td>
-                    <td><b>{{score.unused_gifts}}</b></td>
-                    
-                </tr>
-                <td> ================== </td>
-  
-            </tr>
-            {% endfor %}
-        </table>
+<style>
+    .card {
+        background-color: #f7f7f7;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        color: #343a40;
+        font-weight: bold;
+    }
+
+    th {
+        color: #343a40;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+<div class="container-fluid py-5">
+    <div class="col-md-12">
+        <h2 class="text-center mb-4 text-white bg-black p-3">SCOREBOARD</h2>
     </div>
-    
+    <div class="row justify-content-center">
+        {% for score in scoreboard %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{score.user_name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Total Coins: {{score.coins}}</h6>
+                    <hr>
+                    <table class="table table-hover">
+                        <thead class="tablets">
+                            <tr>
+                                <th>Category</th>
+                                <th>Qty. Records</th>
+                                <th>Category Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in score.categories_list %}
+                            <tr>
+                                <td>{{category.category_name }}</td>
+                                <td>{{category.category_records_qty }}</td>
+                                <td>{{category.category_reward_total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr>
+                    <p class="card-text">Used Gifts: {{score.gifts_used}}</p>
+                    <p class="card-text">Unused Gifts: {{score.unused_gifts}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

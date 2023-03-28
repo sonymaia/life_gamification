@@ -17,6 +17,8 @@ class Daily_Record(models.Model):
     date = models.DateField(null=True, blank=True, default = datetime.today)
     fk_daily_obj = models.ForeignKey(Daily_Objective, on_delete=models.CASCADE)
     fk_user = models.ForeignKey(User, on_delete=models.CASCADE, default = "")
+    def __str__(self):
+        return f"Daily_Record [date = {self.date}]"
 
 class Category(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False)
