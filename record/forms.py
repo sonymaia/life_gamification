@@ -21,8 +21,8 @@ class DailyRecordForm(forms.Form):
                                                                 initial= dict_daily_goals[daily_objective.id]
                                                                 )
 
-    # Adicione os campos adicionais ao formulário
-    field_attrs_date={'type': 'date', 'class': 'form-control', 'id':'date'}
-    date = forms.DateField(widget=forms.DateInput(attrs=field_attrs_date), label= 'Date', initial=date.today().strftime('%Y-%m-%d'))
+        # Adicione os campos adicionais ao formulário
+        field_attrs_date={'type': 'date', 'class': 'form-control', 'id':'date'}
+        self.fields['date'] = forms.DateField(widget=forms.DateInput(attrs=field_attrs_date), label= 'Date', initial=date.today().strftime('%Y-%m-%d'))
     
 
