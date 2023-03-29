@@ -8,8 +8,9 @@ class DailyRecordForm(forms.Form):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         daily_objectives = Daily_Objective.objects.all()
+        current_date = date.today().strftime('%Y-%m-%d')
 
-        dict_daily_goals = daily_goals_check(user=self.user, date=date.today().strftime('%Y-%m-%d'))
+        dict_daily_goals = daily_goals_check(user=self.user, date=current_date)
 
          # Adicione os campos do modelo ao formulário
         for daily_objective in daily_objectives:
@@ -24,5 +25,6 @@ class DailyRecordForm(forms.Form):
         # Adicione os campos adicionais ao formulário
         field_attrs_date={'type': 'date', 'class': 'form-control', 'id':'date'}
         self.fields['date'] = forms.DateField(widget=forms.DateInput(attrs=field_attrs_date), label= 'Date', initial=date.today().strftime('%Y-%m-%d'))
+
     
 
