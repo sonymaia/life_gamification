@@ -7,14 +7,20 @@ from datetime import datetime
 from record.forms import DailyRecordForm
 from django.http import JsonResponse
 from record.core import daily_goals_check
+from django.contrib import messages
 
 
 def index(request):
      return render(request, 'record/index.html')
 
+def user_authentication(request):
+    messages.error(request, 'Usuário não logado')
+    return redirect('login')
+
 def daily_goal_record(request):
-    if request.user.id == None:
-        return redirect('admin:index')
+    if not request.user.is_authenticated:
+        return user_authentication(request)
+        #return redirect('admin:index')
 
     if request.method == 'POST':
         form = DailyRecordForm(request.POST, user=request.user)
@@ -51,7 +57,8 @@ def daily_goal_record(request):
                     delete_daily_record.delete()
 
         # Redireciona para uma página de sucesso ou outra página
-        return redirect(scoreboard)
+        messages.success(request, 'Cadastrado com Sucesso!')
+        return redirect(daily_goal_record)
                             
      
     else:
@@ -61,11 +68,15 @@ def daily_goal_record(request):
 
 
 def get_form_daily_goals_check(request, date):
-    data = daily_goals_check(request.user.id, date)    
-    return JsonResponse(data)
+    if request.user.is_authenticated:
+        data = daily_goals_check(request.user.id, date)    
+        return JsonResponse(data)
 
 
 def scoreboard(request): 
+    if not request.user.is_authenticated:
+        return user_authentication(request)
+    
     #Search all users in the database
     UsersList = User.objects.all()
     dict = {}
