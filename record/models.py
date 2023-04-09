@@ -24,7 +24,7 @@ class Category(models.Model):
     name = models.CharField(max_length=300, null=False, blank=False)
     reward = models.DecimalField(max_digits=10, decimal_places=0, default = 1)
     def __str__(self):
-        return f"Category [name = {self.name}]"
+        return f"{self.name}"
 
 class Category_Record(models.Model):
     fk_category = models.ForeignKey(Category, on_delete=models.CASCADE)

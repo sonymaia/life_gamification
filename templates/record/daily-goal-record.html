@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container my-5 col-sm-6">
     <div class="card shadow">
         <div class="card-header">
             <h1 class="card-title">Daily Goal Record</h1>
@@ -10,7 +10,7 @@
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
-                <div class="col-sm-6 mb-4">
+                <div class="mb-4">
                     <label for="{{ form.date.id_for_label }}" class="col-sm-2 col-form-label">Data</label>
                     <div class="col-sm-3">
                         {{ form.date }}
@@ -24,7 +24,7 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                <div class="d-flex justify-content-center mb-3">
+                <div class="d-flex justify-content-right mb-3">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
                 {% include 'partials/_alerts.html' %}

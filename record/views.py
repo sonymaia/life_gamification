@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import pandas as pd
 from django.db.models import Sum 
 from datetime import datetime
-from record.forms import DailyRecordForm
+from record.forms import DailyRecordForm, CategoryRecordForm
 from django.http import JsonResponse
 from record.core import daily_goals_check
 from django.contrib import messages
@@ -177,3 +177,27 @@ def gifts(user_id, total_coins):
     unused_gifts = Gift.objects.filter(fk_user = user_id, conclusion_date__isnull=True ).count() 
 
     return unused_gifts, gifts_used
+
+def category_record(request):
+    if not request.user.is_authenticated:
+        return user_authentication(request)
+        #return redirect('admin:index')
+
+    if request.method == 'POST':
+        form = CategoryRecordForm(request.POST)
+        if form.is_valid():
+            # Criar um objeto de CategoryRecord a partir dos dados do formulário
+            category_record = Category_Record(fk_category=form.cleaned_data['category'],
+                                              date=form.cleaned_data['date'],
+                                              description=form.cleaned_data['description'],
+                                              fk_user= request.user
+
+                                            )
+            # Salvar o objeto no banco de dados
+            category_record.save()
+            # Redirecionar para a página de sucesso
+            messages.success(request, f'{category_record.description} cadastrado com sucesso!')
+            return redirect('category-record.html')
+    else:
+        form = CategoryRecordForm()
+    return render(request, 'record/category-record.html', {'form': form})
