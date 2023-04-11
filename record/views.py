@@ -65,13 +65,10 @@ def daily_goal_record(request):
         form = DailyRecordForm(user=request.user.id)
     return render(request, 'record/daily-goal-record.html', {'form': form})
 
-
-
 def get_form_daily_goals_check(request, date):
     if request.user.is_authenticated:
         data = daily_goals_check(request.user.id, date)    
         return JsonResponse(data)
-
 
 def scoreboard(request): 
     if not request.user.is_authenticated:
@@ -200,4 +197,6 @@ def category_record(request):
             return redirect('category-record.html')
     else:
         form = CategoryRecordForm()
-    return render(request, 'record/category-record.html', {'form': form})
+        categories = Category_Record.objects.filter(fk_user=request.user)
+    
+        return render(request, 'record/category-record.html', {'form': form, 'categories': categories})
