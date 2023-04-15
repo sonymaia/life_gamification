@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from record.models import Daily_Record, Goal, Category, Category_Record, Gift, Daily_Objective
 from django.contrib.auth.models import User
 import pandas as pd
@@ -8,7 +8,7 @@ from record.forms import DailyRecordForm, CategoryRecordForm
 from django.http import JsonResponse
 from record.core import daily_goals_check
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
      return render(request, 'record/index.html')
@@ -178,7 +178,6 @@ def gifts(user_id, total_coins):
 def category_record(request):
     if not request.user.is_authenticated:
         return user_authentication(request)
-        #return redirect('admin:index')
 
     if request.method == 'POST':
         form = CategoryRecordForm(request.POST)
@@ -197,6 +196,46 @@ def category_record(request):
             return redirect('category-record.html')
     else:
         form = CategoryRecordForm()
-        categories = Category_Record.objects.filter(fk_user=request.user)
+        categories = Category_Record.objects.filter(fk_user=request.user).order_by('fk_category','-date','-id')
     
         return render(request, 'record/category-record.html', {'form': form, 'categories': categories})
+    
+@login_required
+def delete_category_record(request, record_id):
+    record = get_object_or_404(Category_Record, id=record_id)
+    record.delete()
+    return JsonResponse({'success': True})
+
+
+def edit_category_record(request, record_id):
+    if not request.user.is_authenticated:
+        return user_authentication(request)
+    
+    # Obtenha o registro a ser editado
+    record = get_object_or_404(Category_Record, id=record_id)
+
+    if request.method == 'POST':
+        # Preencha o formulário com os dados enviados pelo usuário
+        form = CategoryRecordForm(request.POST)
+        if form.is_valid():
+            # Atualize os campos do registro com os dados do formulário
+            record.date = form.cleaned_data['date']
+            record.fk_category = form.cleaned_data['category']
+            record.description = form.cleaned_data['description']
+
+            # Salve as alterações no registro
+            record.save()
+
+            # Redirecione o usuário para a página de detalhes do registro
+            return redirect('category_record')
+    else:
+        # Crie o formulário preenchido com os dados do registro a ser editado
+        form = CategoryRecordForm(initial={
+            'date': record.date.strftime('%Y-%m-%d'),
+            'category': record.fk_category,
+            'description': record.description
+        })
+
+    return render(request, 'record/edit-category-record.html', {'form': form, 'type':'edit'})
+
+     
