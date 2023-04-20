@@ -51,17 +51,3 @@ class Gift(models.Model):
     def __str__(self):
         return f"Gift [conclusion_date = {self.conclusion_date}]"
 
-
-#class Course(models.Model):
-#    name = models.CharField(max_length=300, null=False, blank=False)
-#    conclusion_date = models.DateField(null=True, blank=True)
-#    def __str__(self):
-#        return f"Couse [name = {self.name}]"
-
-
-#class Book(models.Model):
-#    name = models.CharField(max_length=300, null=False, blank=False)
-#    conclusion_date = models.DateField(null=True, blank=True)
-#    conclusion_date = models.DateField(default = datetime.now, null=True, blank=True)
-#    def __str__(self):
-#        return f"Book [name = {self.name}]"

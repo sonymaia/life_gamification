@@ -140,7 +140,7 @@ def scoreboard(request):
         dict_category = {'category_name':' Extra Goals', 'category_records_qty':goals.count(), 'category_reward_total':goals_reward_total}
         categories_summary_list.append(dict_category)
         
-        unused_gifts, gifts_used = gifts(id_user, total_coins)
+        unused_gifts, gifts_used = automatic_gift_creation(id_user, total_coins)
 
         scoreboardlist.append({'user_name':User.objects.filter(id=id_user).get().username, 
                                'coins':total_coins,
@@ -154,7 +154,7 @@ def scoreboard(request):
     
     return render(request, 'record/scoreboard.html', scoreboard)
 
-def gifts(user_id, total_coins):    
+def automatic_gift_creation(user_id, total_coins):    
     total_gifts = int(total_coins/30)
     gifts_db = Gift.objects.filter(fk_user = user_id).count() 
     gifts_used = 0
@@ -174,6 +174,11 @@ def gifts(user_id, total_coins):
     unused_gifts = Gift.objects.filter(fk_user = user_id, conclusion_date__isnull=True ).count() 
 
     return unused_gifts, gifts_used
+
+def gifts(request):
+    pass
+
+
 
 def category_record(request):
     if not request.user.is_authenticated:

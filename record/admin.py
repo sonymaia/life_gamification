@@ -37,7 +37,7 @@ class RulesList(admin.ModelAdmin):
 admin.site.register(Rule, RulesList)
 
 class DailyRecordsList(admin.ModelAdmin):
-    list_display = ("date", "fk_daily_obj", "fk_user")
+    list_display = ("id", "date", "fk_daily_obj", "fk_user")
     list_display_links = ("date", "fk_daily_obj")
     search_fields = ("date",)
     list_filter = ("fk_daily_obj", "fk_user",)
@@ -45,7 +45,7 @@ class DailyRecordsList(admin.ModelAdmin):
 admin.site.register(Daily_Record, DailyRecordsList)
 
 class GiftsList(admin.ModelAdmin):
-    list_display = ("fk_user", "creation_date", "conclusion_date")
+    list_display = ("id", "fk_user", "creation_date", "conclusion_date")
     list_display_links = ("fk_user", "creation_date", "conclusion_date")
     search_fields = ("fk_user",)
     list_filter = ("fk_user",)

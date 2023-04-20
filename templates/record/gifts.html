@@ -1,0 +1,32 @@
+{% extends 'record/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5 col-sm-8">
+    <div class="container card my-3">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Gift ID</th>
+                    <th>Created</th>
+                    <th>To use</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gift in gifts %}
+                <tr>
+                    <td>{{ gift.id }}</td>
+                    <td>{{ gift.date }}</td>
+                    <td>
+                        <button class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
+                            data-id="{{ gift.id }}"><i>Use</i></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
