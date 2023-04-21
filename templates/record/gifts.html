@@ -2,30 +2,54 @@
 {% load static %}
 
 {% block content %}
+<div class="my-5 col-md-12 container-fluid">
+    <h2 class="text-center mb-4 text-white bg-black p-3">GIFT CARDS</h2>
+</div>
+
 <div class="container my-5 col-sm-8">
-    <div class="container card my-3">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Gift ID</th>
-                    <th>Created</th>
-                    <th>To use</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for gift in gifts %}
-                <tr>
-                    <td>{{ gift.id }}</td>
-                    <td>{{ gift.date }}</td>
-                    <td>
-                        <button class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
-                            data-id="{{ gift.id }}"><i>Use</i></button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+    {% for type, gifts in gifts_dict.items %}
+    <div class="col">
+        <div class="card shadow my-3">
+            <table class="table table-hover">
+                <div class="card-header">
+                    <h3>{{ type }}</h3>
+                </div>
+                <div class="card-body">
+                    <thead>
+                        <tr>
+                            <th>Gift ID</th>
+                            <th>Created</th>
+                            {% if type == "used" %}
+                            <th>Used</th>
+                            {% else %}
+                            <th>To use</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for gift in gifts %}
+                        <tr>
+                            <td>{{ gift.id }}</td>
+                            <td>{{ gift.creation_date }}</td>
+                            {% if type == "used" %}
+                            <td>{{ gift.conclusion_date }}</td>
+                            {% else %}
+                            <td>
+                                <button
+                                    class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
+                                    data-id="{{ gift.id }}"><i>Use</i></button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </div>
+            </table>
+        </div>
     </div>
+    {% endfor %}
 </div>
 
 

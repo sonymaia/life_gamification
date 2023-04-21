@@ -31,7 +31,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = bool(int(os.getenv('DEBUG')))
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://livegamification-production.up.railway.app', 'https://winper.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://winper.up.railway.app']
 
 
 

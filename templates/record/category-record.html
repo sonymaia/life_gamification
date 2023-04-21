@@ -4,64 +4,72 @@
 
 {% block content %}
 
-<div class="container my-5 col-sm-8">
-    <div id="form-add" style="display:none;">
-        {% include 'partials/_category-record.html' %}
+<div class="container my-5">
+    <div class="container my-5 justify-content-center d-flex align-items-cente">
+        <div id="form-add" style="display:none;" class="col-sm-8">
+            {% include 'partials/_category-record.html' %}
+        </div>
+        {% include 'partials/_alerts.html' %}
+        
     </div>
-    {% include 'partials/_alerts.html' %}
-    <div class="d-flex justify-content-end">
+    
+    <div class="my-3 justify-content-end d-flex align-items-end">
         <button type="button" class="btn btn-success " id="toggle-button" onclick="toggleForm()">Add</button>
     </div>
 
-    {% if categories %}
-    <div class="container card my-3">
-        <!-- <form method="GET" class="form-inline mb-3">
-            <div class="form-group mb-3">
-                <label for="category_filter">Categoria:</label>
-                <input type="text" class="form-control" name="category_filter" id="category_filter">
+    {% if categories_dict %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center d-flex align-items-cente">
+        {% for category, records in categories_dict.items %}
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ category.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Data</th>
+                                <th>Editar</th>
+                                <th>Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr>
+                                <td>{{ record.description }}</td>
+                                <td>{{ record.date }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
+                                        data-id="{{ record.id }}">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button
+                                        class="btn btn-danger delete-button d-flex flex-column flex-md-row align-items-md-center"
+                                        data-id="{{ record.id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Filtrar</button>
-        </form> -->
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Categoria</th>
-                    <th>Descrição</th>
-                    <th>Data</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
-                    <!-- <th>Usuário</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
-                <tr>
-                    <td>{{ category.fk_category }}</td>
-                    <td>{{ category.description }}</td>
-                    <td>{{ category.date }}</td>
-                    <td>
-                        <button class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
-                            data-id="{{ category.id }}"><i class="bi bi-pencil-square"></i></button>
-                    </td>
-                    <td>
-                        <button
-                            class="btn btn-danger delete-button d-flex flex-column flex-md-row align-items-md-center"
-                            data-id="{{ category.id }}"><i class="bi bi-trash"></i></button>
-                    </td>
-
-                    <!-- <td><button class="btn btn-danger delete-button">Deletar</button></td> -->
-                    <!-- <td>{{ category.fk_user }}</td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        </div>
+        {% endfor %}
     </div>
     {% endif %}
 
 </div>
 
 
-<script src="{% static 'js/script.js' %}" ></script>
+
+<script src="{% static 'js/script.js' %}"></script>
 <script>
     // mostra e esconde a div para adicionar uma nova categoria
     function toggleForm() {
@@ -71,7 +79,8 @@
             formSection.style.display = "block";
             toggleButton.classList.remove("btn-success");
             toggleButton.classList.add("btn-danger");
-            toggleButton.innerHTML = "Cancelar";
+            toggleButton.innerHTML = "cancel";
+
         } else {
             formSection.style.display = "none";
             toggleButton.classList.remove("btn-danger");
@@ -121,7 +130,7 @@
         });
     });
 
-    
+
 
 
 </script>
