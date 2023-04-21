@@ -237,7 +237,8 @@ def category_record(request):
             category = record.fk_category
             if category not in categories_dict:
                 categories_dict[category] = [record]
-            categories_dict[category].append(record)
+            else:
+                categories_dict[category].append(record)
 
         return render(request, 'record/category-record.html', {'form': form, 'categories_dict': categories_dict})
 
