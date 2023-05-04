@@ -37,9 +37,11 @@
                             <td>{{ gift.conclusion_date }}</td>
                             {% else %}
                             <td>
-                                <button
-                                    class="btn btn-primary edit-button d-flex flex-column flex-md-row align-items-md-center"
-                                    data-id="{{ gift.id }}"><i>Use</i></button>
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="gift_id" value="{{ gift.id }}">
+                                    <button type="submit" class="btn btn-primary">Use</button>
+                                </form>
                             </td>
                             {% endif %}
                         </tr>
