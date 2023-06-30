@@ -189,22 +189,36 @@ def automatic_gift_creation(user_id, total_coins):
 def gift_cards(request):
     if not request.user.is_authenticated:
         return user_authentication(request)
-
-
-    gifts = Gift.objects.filter(fk_user=request.user)
-
-    gifts_dict = {}
-    gifts_dict['not_used'] = []
-    gifts_dict['used'] = []
     
+    if request.method == 'POST':        
+        response = use_gift(request.POST.get('gift_id'))
 
-    for gift in gifts:
-        if gift.conclusion_date:
-            gifts_dict['used'].append(gift)
-        else:
-            gifts_dict['not_used'].append(gift)
+        if response.get('success'):
+            dict = gifts_dict(request.user)
+            return JsonResponse({'gifts_dict': dict})
 
-    return render(request, 'record/gifts.html', {'gifts_dict': gifts_dict})
+    dict = gifts_dict(request.user)
+
+    return render(request, 'record/gifts.html', {'gifts_dict': dict})
+
+
+#Retorna um dicionario com os gifts usados e não usados por um usuario esse eh o formato = {not_used': [], 'used':[]}
+def gifts_dict(user):
+    dict = {
+                'not_used': list(Gift.objects.filter(fk_user=user, conclusion_date=None).values()),
+                'used': list(Gift.objects.filter(fk_user=user).exclude(conclusion_date=None).values())
+            }
+    return dict 
+
+
+
+#add a data em que o gift foi usado e atualiza no banco de dados
+def use_gift(gift_id):
+    gift = Gift.objects.get(id=gift_id)
+    gift.conclusion_date = datetime.today()
+    gift.save()
+    
+    return JsonResponse({'success': True})
 
 
 def category_record(request):
