@@ -30,8 +30,8 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.getenv('DEBUG')))
 
-ALLOWED_HOSTS = ['winper.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['https://winper.up.railway.app']
+ALLOWED_HOSTS = ['*']
+#CSRF_TRUSTED_ORIGINS = ['https://winper.up.railway.app']
 
 
 
